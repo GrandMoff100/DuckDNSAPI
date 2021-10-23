@@ -1,7 +1,6 @@
 DuckDNS API
 ***************
 
-.. code-block:: python
     import os
     from duckdnsapi import Client
 
