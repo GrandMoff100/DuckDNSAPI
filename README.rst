@@ -2,6 +2,7 @@ DuckDNS API
 ***************
 
 Quick Example::
+
     import os
     from duckdnsapi import Client
 
