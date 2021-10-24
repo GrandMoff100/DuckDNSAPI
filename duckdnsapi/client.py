@@ -45,7 +45,7 @@ class RecordResponse(Response):
     :ivar record: The text record returned from your DuckDNS
     :ivar updated: A boolean representing whether or not the txt record was updated in the request.
     """
-    
+
     record: str
     updated: bool
 
@@ -74,7 +74,7 @@ class UpdateResponse(Response):
     :param url: The url the response was returned from.
     :param text: The content of the response. Contains useful information when the verbose option is set to True.
     :ivar ip: The IP that the domains in the request now point to.
-    :ivar updated: A boolean representing whether or not the ip was updated in the request.    
+    :ivar updated: A boolean representing whether or not the ip was updated in the request. 
     """
 
     updated: bool
@@ -130,11 +130,11 @@ class Client:
         """Sets the content of the TXT record of the given domains to given content."""
         if content:
             return self.request(*domains, params={"txt": content, "verbose": "true"})
-        
+
     def clear_txt_record(self, *domains: Tuple[str]) -> RecordResponse:
         """Clears the content of all the TXT records of the given domains."""
         return self.request(*domains, params={"txt": "", "clear": "true", "verbose": "true"})
-        
+
     def request(self, *domains: Tuple[str], params: dict = {}) -> requests.Response:
         """The method that sends HTTP requests to the API with the appropriate authentication parameters."""
         params.update({
