@@ -12,6 +12,14 @@ class Response:
     text: str
 
 
+class RecordResponse(Response):
+    pass
+
+
+class UpdateResponse(Response):
+    pass
+
+
 @dataclasses.dataclass()
 class Client:
     token: str
@@ -21,8 +29,7 @@ class Client:
         *domains: Tuple[str],
         ip: str = None,
         ipv6: str = None,
-        verbose: bool = None,
-        clear: bool = None
+        verbose: bool = None
     ) -> Response:
         params = {}
         if ip is not None:
@@ -31,11 +38,22 @@ class Client:
             params.update(ipv6=ipv6)
         if verbose:
             params.update(verbose="true")
-        if clear:
-            params.update(clear="true")
-        return self.request(*domains, params)
+        response = self.request(*domains, params)
+        return UpdateResponse(response.url, response.text)
 
-    def request(self, *domains, params: dict) -> Response:
+    def clear(self, *domains: Tuple[str]):
+        pass
+
+    def get_txt_record(self, *domains: Tuple[str]):
+        pass
+
+    def set_txt_record(self, *domains: Tuple[str]):
+        pass
+
+    def clear_txt_record(self, *domains: Tuple[str]):
+        pass
+
+    def request(self, *domains: Tuple[str], params: dict = {}) -> Response:
         params.update(params = {
             "domains": ",".join(domains),
             "token": self.token
@@ -46,11 +64,9 @@ class Client:
         )
         return self.after_request(response)
 
-    def after_request(self, response: requests.Response) -> Response:
+    def after_request(self, response: requests.Response) -> requests.Response:
         if response.text == "KO":
             self.bad_response()
         elif response.text.startswith("OK"):
-            return self.convert_response(response)
+            return response
     
-    def convert_response(self, response: requests.Response) -> Response:
-        return Response(response.url, response.text)
