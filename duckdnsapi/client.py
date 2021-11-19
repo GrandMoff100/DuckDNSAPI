@@ -4,10 +4,13 @@ import requests
 import dataclasses
 from typing import Tuple
 
+from duckdnsapi.errors import DuckDNSError
+from duckdnsapi.responses import UpdateResponse, RecordResponse
 
 DUCKDNS_API = "https://www.duckdns.org/update"
 
 
+<<<<<<< Updated upstream
 class Error(Exception):
     """
     The base Exception class for all DuckDNSAPI exceptions.
@@ -98,6 +101,8 @@ class UpdateResponse(Response):
             pass
 
 
+=======
+>>>>>>> Stashed changes
 @dataclasses.dataclass()
 class Client:
     """
@@ -129,12 +134,23 @@ class Client:
     def set_txt_record(self, *domains: Tuple[str], content: str = None) -> RecordResponse:
         """Sets the content of the TXT record of the given domains to given content."""
         if content:
+<<<<<<< Updated upstream
             return self.request(*domains, params={"txt": content, "verbose": "true"})
         
     def clear_txt_record(self, *domains: Tuple[str]) -> RecordResponse:
         """Clears the content of all the TXT records of the given domains."""
         return self.request(*domains, params={"txt": "", "clear": "true", "verbose": "true"})
         
+=======
+            resp = self.request(*domains, params={"txt": content, "verbose": "true"})
+            return RecordResponse(resp.url, resp.text)
+    
+    def clear_txt_record(self, *domains: Tuple[str]) -> RecordResponse:
+        """Clears the content of all the TXT records of the given domains."""
+        resp = self.request(*domains, params={"txt": "", "clear": "true", "verbose": "true"})
+        return RecordResponse(resp.url, resp.text)
+
+>>>>>>> Stashed changes
     def request(self, *domains: Tuple[str], params: dict = {}) -> requests.Response:
         """The method that sends HTTP requests to the API with the appropriate authentication parameters."""
         params.update({
