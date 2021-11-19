@@ -1,4 +1,5 @@
-from .client import Client, Response
+from .client import Client
+
 
 __version__ = "0.0.0"
 __name__ = "DuckDNSAPI"
